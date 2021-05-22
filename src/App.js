@@ -1,10 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { BrowserRouter, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Typography } from "@material-ui/core";
-import TableCellData from "./components/TableCellData";
+
 import TableData from "./components/TableData";
 import PageInation from "./components/PageInation";
+import CustomerBidData from "./components/CustomerBidData";
+import { StoreProvider } from "./components/context";
 
 function App() {
   const [data, setData] = useState([]);
@@ -31,18 +34,26 @@ function App() {
   // Change Page
 
   const pageinate = (pageNumber) => setcurrentPage(pageNumber);
+
   return (
-    <div className="App">
-      <Typography variant="h1" component="h2">
-        Customers Record
-      </Typography>
-      <TableData item={currentData} />
-      <PageInation
-        dataPerPage={dataPerPage}
-        totalData={data.length}
-        pageinate={pageinate}
-      />
-    </div>
+    <StoreProvider>
+      <BrowserRouter>
+        <div className="App">
+          <Route exact path="/">
+            <Typography variant="h1" component="h2">
+              Customers Record
+            </Typography>
+            <TableData item={currentData} />
+            <PageInation
+              dataPerPage={dataPerPage}
+              totalData={data.length}
+              pageinate={pageinate}
+            />
+          </Route>
+          <Route exact path="/customerinfo/:id" component={CustomerBidData} />
+        </div>
+      </BrowserRouter>
+    </StoreProvider>
   );
 }
 

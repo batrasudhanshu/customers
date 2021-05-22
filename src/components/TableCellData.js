@@ -1,11 +1,21 @@
 import { Avatar, TableCell } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router";
 import BidMaxMin from "./BidMaxMin";
+import { useStore } from "./context";
 
 const TableCellData = ({ item }) => {
+  const { state, dispatch } = useStore();
+  const history = useHistory();
+  const handleClick = () => {
+    dispatch({ type: "update", details: item });
+    history.push(`/customerinfo/${item.id}`);
+
+    //console.log(id);
+  };
   return (
     <>
-      <TableCell>
+      <TableCell onClick={handleClick}>
         <div style={{ alignItems: "center" }}>
           <Avatar
             alt={item.firstname.toUpperCase()}
@@ -20,9 +30,11 @@ const TableCellData = ({ item }) => {
           {item.firstname.toUpperCase() + " " + item.lastname.toUpperCase()}
         </div>
       </TableCell>
-      <TableCell>{item.email}</TableCell>
-      <TableCell>{item.phone}</TableCell>
-      <TableCell>{item.hasPremium ? "True" : "False"}</TableCell>
+      <TableCell onClick={handleClick}>{item.email}</TableCell>
+      <TableCell onClick={handleClick}>{item.phone}</TableCell>
+      <TableCell onClick={handleClick}>
+        {item.hasPremium ? "True" : "False"}
+      </TableCell>
 
       {console.log(item.bids)}
       <TableCell>
